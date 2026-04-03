@@ -5,119 +5,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hiker Ventures — Portfólio</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root { --dark:#0F0F1A; --navy:#16213E; --blue:#00528A; --accent:#0096C7; --teal:#00B4D8; --light:#F7F8FA; --white:#FFF; --grey:#8892A0; --border:#E5E7EB; --red:#EF4444; --green:#10B981; --amber:#F59E0B; }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-webkit-font-smoothing:antialiased}
+/* === HIKER DESIGN SYSTEM (from hiker-site/tailwind + index.css) === */
+:root {
+  --hiker-dark: #1A1A2E;
+  --hiker-blue: #00528A;
+  --hiker-accent: #0096C7;
+  --hiker-light: #90E0EF;
+  --background: #FFFFFF;
+  --secondary: #F2F6FA;
+  --foreground: #131A24;
+  --muted: #6B7B8F;
+  --border: #D3E0EA;
+  --red: #F04438;
+  --green: #10B981;
+  --amber: #F59E0B;
+  --radius: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',system-ui,sans-serif; background:var(--background); color:var(--foreground); -webkit-font-smoothing:antialiased; }
 
-/* Hero */
-.hero{background:linear-gradient(135deg,var(--dark) 0%,var(--navy) 50%,#1a365d 100%);padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(0,150,199,.08) 0%,transparent 50%);animation:pulse 8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-.hero h1{color:var(--white);font-size:36px;font-weight:800;letter-spacing:-1px;position:relative}
-.hero .sub{color:var(--accent);font-size:15px;font-weight:500;margin-top:8px;position:relative}
-.hero .fund{color:var(--grey);font-size:13px;margin-top:16px;position:relative}
-.hero .update-badge{display:inline-block;background:rgba(0,150,199,.15);color:var(--teal);padding:6px 16px;border-radius:20px;font-size:11px;font-weight:600;margin-top:20px;position:relative}
+/* === HEADER (sticky glass) === */
+.header { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); height:64px; display:flex; align-items:center; padding:0 2rem; }
+.header .logo { font-size:15px; font-weight:900; color:var(--hiker-blue); letter-spacing:-.3px; }
+.header .sep { width:1px; height:24px; background:var(--border); margin:0 16px; }
+.header .page-title { font-size:13px; color:var(--muted); font-weight:500; }
 
-/* Container */
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* === HERO (dark, like hiker-site HeroSection dark variant) === */
+.hero { background:var(--hiker-dark); padding:96px 0 72px; text-align:center; }
+.hero .badge { display:inline-block; background:rgba(255,255,255,.1); color:var(--hiker-accent); padding:6px 16px; border-radius:9999px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:24px; }
+.hero h1 { color:#FFF; font-size:clamp(32px,5vw,56px); font-weight:900; letter-spacing:-1.5px; line-height:1.1; }
+.hero .sub { color:rgba(255,255,255,.6); font-size:clamp(16px,2vw,20px); margin-top:16px; line-height:1.5; font-weight:400; }
 
-/* Section */
-.section{padding:60px 0}
-.section-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px}
-.section-title{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:32px;color:var(--dark)}
+/* === STAT BAR (like StatBar.tsx: bg-hiker-blue) === */
+.stat-bar { background:var(--hiker-blue); padding:32px 0; }
+.stat-bar .container { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
+.stat-bar .stat .val { font-size:clamp(24px,3vw,32px); font-weight:900; color:#FFF; }
+.stat-bar .stat .label { font-size:clamp(11px,1.2vw,13px); color:rgba(255,255,255,.6); margin-top:4px; font-weight:500; }
+@media(max-width:640px) { .stat-bar .container { grid-template-columns:repeat(2,1fr); } }
 
-/* KPI Strip */
-.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin:-40px auto 0;position:relative;z-index:10}
-.kpi{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.06);transition:transform .2s}
-.kpi:hover{transform:translateY(-2px)}
-.kpi .label{font-size:12px;color:var(--grey);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.kpi .val{font-size:32px;font-weight:800;margin-top:6px;letter-spacing:-1px}
-.kpi .delta{font-size:12px;font-weight:600;margin-top:4px}
-.kpi .delta.up{color:var(--green)} .kpi .delta.down{color:var(--red)}
+/* === CONTAINER === */
+.container { max-width:1280px; margin:0 auto; padding:0 2rem; }
 
-/* Cards */
-.card{background:var(--white);border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.04);margin-bottom:20px}
-.card h3{font-size:17px;font-weight:700;margin-bottom:20px}
+/* === SECTIONS (matching hiker-site spacing) === */
+.section { padding:80px 0; }
+.section.bg-dark { background:var(--hiker-dark); }
+.section.bg-grey { background:var(--secondary); }
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--hiker-blue); margin-bottom:8px; }
+.section.bg-dark .section-label { color:var(--hiker-accent); }
+.section-title { font-size:clamp(24px,3vw,32px); font-weight:900; letter-spacing:-.5px; margin-bottom:40px; }
+.section.bg-dark .section-title { color:#FFF; }
 
-/* Chart containers */
-.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:768px){.chart-grid{grid-template-columns:1fr}}
+/* === PORTFOLIO GRID (like PortfolioStrip cards) === */
+.portfolio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:24px; }
+.port-card { background:var(--background); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .3s; }
+.port-card:hover { box-shadow:0 8px 30px rgba(0,0,0,.08); transform:translateY(-4px); }
+.port-card .top { padding:24px 24px 16px; }
+.port-card .name { font-size:20px; font-weight:900; letter-spacing:-.3px; }
+.port-card .segment { font-size:12px; color:var(--muted); margin-top:2px; font-weight:500; }
+.port-card .metrics { display:grid; grid-template-columns:repeat(3,1fr); padding:0 24px 16px; }
+.port-card .metric { text-align:center; padding:12px 0; }
+.port-card .metric .m-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:700; }
+.port-card .metric .m-val { font-size:18px; font-weight:900; margin-top:4px; letter-spacing:-.3px; }
+.port-card .metric .m-val.positive { color:var(--green); }
+.port-card .metric .m-val.negative { color:var(--red); }
+.port-card .spark { padding:0 16px 12px; height:56px; }
+.port-card .spark canvas { width:100%!important; height:48px!important; }
 
-/* Portfolio cards */
-.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
-.port-card{background:var(--white);border-radius:16px;padding:0;box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden;cursor:pointer;transition:all .3s}
-.port-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-3px)}
-.port-card .header{padding:24px 28px 16px;display:flex;justify-content:space-between;align-items:flex-start}
-.port-card .name{font-size:20px;font-weight:800;letter-spacing:-.3px}
-.port-card .segment{font-size:12px;color:var(--grey);margin-top:2px}
-.port-card .badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
-.badge-active{background:#D1FAE5;color:#065F46} .badge-watch{background:#FEF3C7;color:#92400E}
-.port-card .metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding:0 28px 20px}
-.port-card .metric{text-align:center;padding:12px 0}
-.port-card .metric .m-label{font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px}
-.port-card .metric .m-val{font-size:18px;font-weight:700;margin-top:2px}
-.port-card .spark{padding:0 20px 16px;height:60px}
-.port-card .spark canvas{width:100%!important;height:50px!important}
+/* === CHARTS (white cards, like PillarCards) === */
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media(max-width:768px) { .chart-grid { grid-template-columns:1fr; } }
+.card { background:var(--background); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:box-shadow .3s; }
+.card:hover { box-shadow:0 4px 16px rgba(0,0,0,.05); }
+.card h3 { font-size:15px; font-weight:700; margin-bottom:16px; color:var(--foreground); }
 
-/* Company detail overlay */
-.detail-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,26,.6);backdrop-filter:blur(4px);z-index:1000;justify-content:center;align-items:center;padding:24px}
-.detail-overlay.show{display:flex}
-.detail-panel{background:var(--white);border-radius:20px;max-width:1000px;width:100%;max-height:90vh;overflow-y:auto;padding:40px;position:relative}
-.detail-panel .close{position:absolute;top:16px;right:20px;font-size:24px;cursor:pointer;color:var(--grey);background:none;border:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.detail-panel .close:hover{background:var(--light)}
-.detail-panel h2{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:24px}
-.detail-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:32px}
-.detail-kpi{background:var(--light);border-radius:12px;padding:16px;text-align:center}
-.detail-kpi .dk-label{font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px}
-.detail-kpi .dk-val{font-size:22px;font-weight:800;margin-top:4px}
-.detail-charts{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
-@media(max-width:768px){.detail-charts{grid-template-columns:1fr}}
+/* === DETAIL OVERLAY === */
+.detail-overlay { display:none; position:fixed; inset:0; background:rgba(26,26,46,.7); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center; padding:24px; }
+.detail-overlay.show { display:flex; }
+.detail-panel { background:var(--background); border-radius:16px; max-width:1060px; width:100%; max-height:92vh; overflow-y:auto; position:relative; }
+.detail-panel .panel-header { padding:32px 32px 24px; border-bottom:1px solid var(--border); }
+.detail-panel .panel-header h2 { font-size:28px; font-weight:900; letter-spacing:-.5px; }
+.detail-panel .panel-header .segment { font-size:13px; color:var(--muted); margin-top:4px; }
+.detail-panel .close { position:absolute; top:20px; right:20px; font-size:20px; cursor:pointer; color:var(--muted); background:var(--secondary); border:none; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.detail-panel .close:hover { background:var(--border); }
+.detail-panel .body { padding:32px; }
+.detail-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:32px; }
+.detail-kpi { background:var(--secondary); border-radius:var(--radius); padding:16px; text-align:center; }
+.detail-kpi .dk-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:700; }
+.detail-kpi .dk-val { font-size:22px; font-weight:900; margin-top:4px; letter-spacing:-.3px; }
+.detail-charts { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:32px; }
+@media(max-width:768px) { .detail-charts { grid-template-columns:1fr; } }
 
-/* Updates */
-.updates-section{margin-top:24px}
-.update-card{border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:all .3s}
-.update-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--white)}
-.update-header:hover{background:var(--light)}
-.update-header .company{font-weight:700;font-size:15px}
-.update-header .date{font-size:12px;color:var(--grey);background:var(--light);padding:3px 10px;border-radius:8px}
-.update-header .summary{font-size:13px;color:#555;margin-top:4px;line-height:1.4}
-.update-header .expand-icon{font-size:18px;color:var(--grey);transition:transform .3s;flex-shrink:0;margin-left:12px}
-.update-body{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .4s ease}
-.update-card.open .update-body{max-height:600px;padding:0 20px 20px}
-.update-card.open .expand-icon{transform:rotate(180deg)}
-.update-body p{font-size:13px;line-height:1.7;color:#444;margin-bottom:8px}
-.update-body .tag{display:inline-block;background:var(--light);color:var(--blue);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;margin-right:4px;margin-bottom:4px}
+/* === UPDATES (expandable, like accordion) === */
+.updates-title { font-size:15px; font-weight:700; margin-bottom:16px; }
+.update-card { border:1px solid var(--border); border-radius:var(--radius); margin-bottom:8px; overflow:hidden; }
+.update-header { padding:16px 20px; display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer; transition:background .2s; gap:12px; }
+.update-header:hover { background:var(--secondary); }
+.update-header .left { flex:1; min-width:0; }
+.update-header .company { font-weight:700; font-size:14px; }
+.update-header .summary { font-size:13px; color:var(--muted); margin-top:4px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.update-header .right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.update-header .date { font-size:11px; color:var(--muted); background:var(--secondary); padding:3px 10px; border-radius:9999px; font-weight:600; white-space:nowrap; }
+.update-header .chevron { font-size:12px; color:var(--muted); transition:transform .3s; }
+.update-card.open .chevron { transform:rotate(180deg); }
+.update-body { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+.update-card.open .update-body { max-height:800px; }
+.update-body-inner { padding:0 20px 20px; border-top:1px solid var(--border); }
+.update-body-inner p { font-size:13px; line-height:1.7; color:#444; margin-top:12px; }
+.update-body-inner .tag { display:inline-block; background:rgba(0,82,138,.08); color:var(--hiker-blue); padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; margin-right:4px; }
 
-/* Footer */
-.footer{text-align:center;padding:48px 24px;color:var(--grey);font-size:12px;border-top:1px solid var(--border)}
-.footer .brand{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:4px}
+/* === FOOTER (dark, like hiker-site footer) === */
+.footer { background:var(--hiker-dark); padding:48px 0; text-align:center; }
+.footer .brand { font-size:16px; font-weight:900; color:#FFF; }
+.footer .sub { font-size:12px; color:rgba(255,255,255,.5); margin-top:4px; }
+.footer .sep { width:40px; height:1px; background:rgba(255,255,255,.1); margin:16px auto; }
+.footer .link { font-size:12px; color:var(--hiker-accent); text-decoration:none; }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>Hiker Ventures</h1>
-  <div class="sub">Plataforma para Empreendedores</div>
-  <div class="fund">AF Invest Chronos — FIP Multiestratégia</div>
-  <div class="update-badge">Atualizado: 03/04/2026</div>
+<div class="header">
+  <span class="logo">HIKER VENTURES</span>
+  <span class="sep"></span>
+  <span class="page-title">Relatório de Portfólio</span>
 </div>
 
-<div class="container">
-  <div class="kpi-strip">
-    <div class="kpi"><div class="label">Investidas Ativas</div><div class="val">9</div></div>
-    <div class="kpi"><div class="label">Receita Agregada</div><div class="val">R$ 3.08M</div><div class="delta up">+35.0% vs mes anterior</div></div>
-    <div class="kpi"><div class="label">Empresas com Dados</div><div class="val">5</div></div>
-    <div class="kpi"><div class="label">Vintage</div><div class="val">2023</div></div>
+<div class="hero">
+  <div class="container">
+    <div class="badge">AF Invest Chronos — FIP Multiestratégia</div>
+    <h1>Portfólio Hiker Ventures</h1>
+    <div class="sub">Acompanhamento de investidas e performance do fundo</div>
   </div>
+</div>
 
-  <!-- PORTFOLIO -->
-  <div class="section">
-    <div class="section-label">Portfolio</div>
+<div class="stat-bar">
+  <div class="container">
+    <div class="stat"><div class="val">9</div><div class="label">Investidas ativas</div></div>
+    <div class="stat"><div class="val">R$ 3.08M</div><div class="label">Receita agregada mensal</div></div>
+    <div class="stat"><div class="val">5</div><div class="label">Empresas com dados</div></div>
+    <div class="stat"><div class="val">2023</div><div class="label">Vintage</div></div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Portfólio</div>
     <div class="section-title">Nossas Investidas</div>
-    <div class="portfolio-grid" id="portfolio-grid">
-      
+    <div class="portfolio-grid">
     <div class="port-card" onclick="openDetail('Agora')">
       <div class="header">
         <div><div class="name">Agora</div><div class="segment">Healthtech</div></div>
@@ -177,12 +213,13 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
         <div class="metric"><div class="m-label">Equity Hiker</div><div class="m-val">5,00%</div></div>
       </div>
       <div class="spark"><canvas id="spark-myside"></canvas></div>
-    </div>
-    </div>
+    </div></div>
   </div>
+</div>
 
-  <!-- AGGREGATE CHARTS -->
-  <div class="section">
+<!-- PERFORMANCE -->
+<div class="section bg-grey">
+  <div class="container">
     <div class="section-label">Performance</div>
     <div class="section-title">Visão Consolidada</div>
     <div class="chart-grid">
@@ -190,13 +227,14 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>EBITDA por Investida</h3><canvas id="chart-agg-ebitda" height="140"></canvas></div>
     </div>
   </div>
+</div>
 
-  <!-- UPDATES -->
-  <div class="section">
+<!-- UPDATES -->
+<div class="section">
+  <div class="container">
     <div class="section-label">Acompanhamento</div>
     <div class="section-title">Atualizações Recentes</div>
-    <div class="updates-section">
-      
+    
       <div class="update-card">
         <div class="update-header">
           <div>
@@ -293,16 +331,18 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
           <p><strong>22/01/2026:</strong> A chamada discute uma potencial fusão e aquisição (M&A) da Loopify (empresa do portfólio Venture) com outra empresa, Gutz/Gooxxy (empresa Orbital). O foco está em valuation, cap table e estratégias de integração, com a presença de um consultor externo para a transação.</p><p><strong>16/01/2026:</strong> Discussão aprofundada sobre uma potencial aquisição da Loopify (empresa do portfólio Hiker Venture) pela Aguxi, envolvendo gestão de equity, investidores, troca de ações, valuation e estratégias de saída.</p>
         </div>
       </div>
-    </div>
   </div>
 </div>
 
-<!-- DETAIL OVERLAYS -->
 
 <div class="detail-overlay" id="overlay-agora">
   <div class="detail-panel">
     <button class="close" onclick="closeDetail('Agora')">&times;</button>
-    <h2>Agora</h2>
+    <div class="panel-header">
+      <h2>Agora</h2>
+      <div class="segment">Healthtech</div>
+    </div>
+    <div class="body">
     <div class="detail-kpis">
       <div class="detail-kpi"><div class="dk-label">Receita</div><div class="dk-val">R$ 133k</div></div>
       <div class="detail-kpi"><div class="dk-label">Growth MoM</div><div class="dk-val" style="color:var(--green)">+20.4%</div></div>
@@ -318,12 +358,17 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>Custos vs Despesas</h3><canvas id="detail-agora-custos" height="100"></canvas></div>
     </div>
     
+    </div>
   </div>
 </div>
 <div class="detail-overlay" id="overlay-datlo">
   <div class="detail-panel">
     <button class="close" onclick="closeDetail('Datlo')">&times;</button>
-    <h2>Datlo</h2>
+    <div class="panel-header">
+      <h2>Datlo</h2>
+      <div class="segment">MarTech / Geomarketing</div>
+    </div>
+    <div class="body">
     <div class="detail-kpis">
       <div class="detail-kpi"><div class="dk-label">Receita</div><div class="dk-val">R$ 811k</div></div>
       <div class="detail-kpi"><div class="dk-label">Growth MoM</div><div class="dk-val" style="color:var(--red)">-2.8%</div></div>
@@ -338,7 +383,7 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>Margem Bruta</h3><canvas id="detail-datlo-margem" height="100"></canvas></div>
       <div class="card"><h3>Custos vs Despesas</h3><canvas id="detail-datlo-custos" height="100"></canvas></div>
     </div>
-    <h3 style='margin-bottom:16px'>Atualizacoes e Atuacao Hiker</h3>
+    <div class='updates-title'>Atualizações e Atuação Hiker</div>
           <div class="update-card">
             <div class="update-header">
               <div><div class="company">28/01/2026</div><div class="summary">A chamada discute um aporte financeiro, planejamento estratégico com a Hiker, lançamento de produtos e metas de ARR da Datlo, empresa do portfólio Ven...</div></div>
@@ -360,12 +405,17 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
             </div>
             <div class="update-body"><p>A Hiker, por meio de seus representantes, oferece suporte prático à Datlo (empresa de portfólio) para sua participação no SXSW, incluindo matchmaking, brand awareness e ativações de marca.</p></div>
           </div>
+    </div>
   </div>
 </div>
 <div class="detail-overlay" id="overlay-fluna">
   <div class="detail-panel">
     <button class="close" onclick="closeDetail('Fluna')">&times;</button>
-    <h2>Fluna</h2>
+    <div class="panel-header">
+      <h2>Fluna</h2>
+      <div class="segment">SaaS No-code</div>
+    </div>
+    <div class="body">
     <div class="detail-kpis">
       <div class="detail-kpi"><div class="dk-label">Receita</div><div class="dk-val">R$ 23k</div></div>
       <div class="detail-kpi"><div class="dk-label">Growth MoM</div><div class="dk-val" style="color:var(--red)">-76.1%</div></div>
@@ -380,7 +430,7 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>Margem Bruta</h3><canvas id="detail-fluna-margem" height="100"></canvas></div>
       <div class="card"><h3>Custos vs Despesas</h3><canvas id="detail-fluna-custos" height="100"></canvas></div>
     </div>
-    <h3 style='margin-bottom:16px'>Atualizacoes e Atuacao Hiker</h3>
+    <div class='updates-title'>Atualizações e Atuação Hiker</div>
           <div class="update-card">
             <div class="update-header">
               <div><div class="company">26/03/2026</div><div class="summary">A reunião com a Fluna, empresa do portfólio Venture, discute projeções de receitas (MRR), custos, breakeven e aportes da Hiker, indicando análise fina...</div></div>
@@ -402,12 +452,17 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
             </div>
             <div class="update-body"><p>A chamada é com a Fluna, uma empresa do portfólio de investimento da Hiker. A discussão aprofundada aborda contrato, participação de equity, governança, separação de CNPJs e critérios de faturamento, alinhado ao suporte hands-on para uma empresa investida.</p></div>
           </div>
+    </div>
   </div>
 </div>
 <div class="detail-overlay" id="overlay-greg">
   <div class="detail-panel">
     <button class="close" onclick="closeDetail('Greg')">&times;</button>
-    <h2>Greg</h2>
+    <div class="panel-header">
+      <h2>Greg</h2>
+      <div class="segment">Fintech Pagamentos</div>
+    </div>
+    <div class="body">
     <div class="detail-kpis">
       <div class="detail-kpi"><div class="dk-label">Receita</div><div class="dk-val">R$ 189k</div></div>
       <div class="detail-kpi"><div class="dk-label">Growth MoM</div><div class="dk-val" style="color:var(--green)">+29.7%</div></div>
@@ -422,7 +477,7 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>Margem Bruta</h3><canvas id="detail-greg-margem" height="100"></canvas></div>
       <div class="card"><h3>Custos vs Despesas</h3><canvas id="detail-greg-custos" height="100"></canvas></div>
     </div>
-    <h3 style='margin-bottom:16px'>Atualizacoes e Atuacao Hiker</h3>
+    <div class='updates-title'>Atualizações e Atuação Hiker</div>
           <div class="update-card">
             <div class="update-header">
               <div><div class="company">28/01/2026</div><div class="summary">A Gregpay, empresa do portfólio Venture da Hiker, apresenta um overview estratégico, operacional e regulatório, incluindo mudança de posicionamento, p...</div></div>
@@ -444,12 +499,17 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
             </div>
             <div class="update-body"><p>A Gregpay é uma empresa do portfólio da Hiker, e a discussão aprofundou-se em métricas operacionais (TPV, maquininhas ativas), financeiras (queima, break-even, captação), estrutura de equipe e planejamento estratégico de novos projetos, típico de acompanhamento de investida. O Guilherme também oferece conexões e suporte.</p></div>
           </div>
+    </div>
   </div>
 </div>
 <div class="detail-overlay" id="overlay-myside">
   <div class="detail-panel">
     <button class="close" onclick="closeDetail('MySide')">&times;</button>
-    <h2>MySide</h2>
+    <div class="panel-header">
+      <h2>MySide</h2>
+      <div class="segment">Proptech</div>
+    </div>
+    <div class="body">
     <div class="detail-kpis">
       <div class="detail-kpi"><div class="dk-label">Receita</div><div class="dk-val">R$ 1,924k</div></div>
       <div class="detail-kpi"><div class="dk-label">Growth MoM</div><div class="dk-val" style="color:var(--green)">+75.7%</div></div>
@@ -464,7 +524,7 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
       <div class="card"><h3>Margem Bruta</h3><canvas id="detail-myside-margem" height="100"></canvas></div>
       <div class="card"><h3>Custos vs Despesas</h3><canvas id="detail-myside-custos" height="100"></canvas></div>
     </div>
-    <h3 style='margin-bottom:16px'>Atualizacoes e Atuacao Hiker</h3>
+    <div class='updates-title'>Atualizações e Atuação Hiker</div>
           <div class="update-card">
             <div class="update-header">
               <div><div class="company">28/01/2026</div><div class="summary">Todos os participantes são da Hiker. A reunião foca no desenvolvimento de uma ferramenta interna para análise de projeções financeiras de uma empresa ...</div></div>
@@ -486,67 +546,64 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);-w
             </div>
             <div class="update-body"><p>MySide é uma empresa do portfólio Hiker Venture. A reunião foca em resultados financeiros (VGV, PNL, burn rate), planejamento estratégico de crescimento e uma nova rodada de investimento, discutindo valuation, tranches e liquidation preference com múltiplos investidores.</p></div>
           </div>
+    </div>
   </div>
 </div>
 
 <div class="footer">
-  <div class="brand">Hiker Ventures</div>
-  hiker.ventures
+  <div class="brand">HIKER VENTURES</div>
+  <div class="sub">Plataforma para Empreendedores</div>
+  <div class="sep"></div>
+  <a class="link" href="https://hiker.ventures" target="_blank">hiker.ventures</a>
+  <div class="sub" style="margin-top:16px">Atualizado em 03/04/2026</div>
 </div>
 
 <script>
 const D = {"Agora": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25"], "receita": [85060.0, 67635.0, 82368.33, 92132.93, 87419.56, 192209.56, 100096.56, 95096.56, 379595.2, 139891.86, 110278.86, 132814.86], "ebitda": [-65018.41, -82721.8, -60285.58, -53040.82, -117955.94, -37534.68, -138728.08, -184902.82, -33948.71, -130977.4, -202417.95, -99627.8], "margem_bruta": [49.0, 25.0, 46.0, 42.0, 37.0, 67.0, 39.0, 25.0, 34.0, 57.99999999999999, 25.0, 56.99999999999999], "caixa": [1598164.66, 2016730.99, 1979744.55, 2411702.41, 2495075.26, 2630630.54, 2371438.45, 2708041.06, 2662158.21, 2489706.3, 2353039.91, 2098522.22, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17], "lucro_liquido": [-68017.57, -85814.26, -82935.62, -55957.06, -121691.8, -68289.26, -138084.11, -189084.46, -77724.8, -133030.5, -194090.72, -132607.27], "custos": [41458.94, 49035.2, 42637.62, 51205.14, 52816.84, 55320.83, 58755.91, 68968.23, 249011.19, 55978.58, 79380.43, 55144.65], "despesas": [107947.05, 102009.83, 100033.31, 93341.17, 153388.84, 155147.49, 180823.01, 212126.61, 168290.96, 216227.31, 236540.72, 179766.23]}, "Datlo": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26", "Feb/26"], "receita": [583247.0, 657094.0, 707083.0, 768647.0, 810525.0, 759676.0, 828024.0, 818656.0, 821761.0, 960114.0, 922753.0, 1378416.0, 834706.0, 811031.0], "ebitda": [-132665.6, -93672.7, -130488.1, -11334.6, -141636.2, -219539.9, -132629.1, -187083.1, -32454.7, 43397.9, -106399.2, 545562.8, -81412.0, -9054.6], "margem_bruta": [62.0, 60.0, 61.0, 63.0, 64.0, 60.0, 65.0, 67.0, 68.0, 69.0, 66.0, 80.0], "caixa": [2032709.0, 1974998.5, 1863040.4, 1837480.4, 1825166.0, 1552549.0, 1392182.7, 1125752.0, 1114047.6, 1179174.36, 777456.26, 666615.43, 710907.23, 627971.63, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43], "lucro_liquido": [-119179.0, -79914.9, -120228.3, 1553.4, -130269.3, -209264.1, -124488.2, -180454.2, -26016.8, 49072.6, -102232.7, 547524.6, -83070.5, -7779.1], "custos": [205472.4, 242482.2, 255096.5, 266642.2, 271183.5, 281100.6, 273535.1, 255441.4, 253445.6, 278896.9, 293935.3, 258125.2, 306403.1, 249788.5], "despesas": [470878.2, 463807.5, 534722.6, 461474.0, 626371.4, 646927.5, 631487.7, 695354.4, 566219.2, 573538.1, 675273.0, 482799.8, 554011.0, 516231.7]}, "Fluna": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26"], "receita": [130259.0, 93146.0, 107076.0, 114456.0, 79184.0, 54398.0, 61868.0, 36788.0, 84799.0, 51024.0, 35312.0, 95902.0, 22939.0], "ebitda": [-65981.0, -135464.0, -100284.0, -165494.0, -150728.0, -197474.0, -143630.0, -170750.0, -45313.0, -132685.0, -93612.0, -85290.0, -109997.0], "margem_bruta": [15.0, -26.0, 0.0, -24.0, -39.0, -1.48, -5.0, -18.0, 39.0, -40.0, -31.0, -5.0], "caixa": [254447.0, 275430.0, 251804.0, 234663.0, 64551.0, 98471.0, -97922.0, -284573.0, -129182.0, -263570.0, -494032.0, -451962.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0], "lucro_liquido": [-66094.0, -135742.0, -100398.0, -165610.0, -150878.0, -197698.0, -143737.0, -170853.0, -45411.0, -132767.0, -93776.0, -85772.0, -110476.0], "custos": [102339.0, 109128.0, 105249.0, 121056.0, 104327.0, 131257.0, 61935.0, 42209.0, 48119.0, 64107.0, 41589.0, 92514.0, 45298.0], "despesas": [84429.0, 112646.0, 100437.0, 142328.0, 121364.0, 119159.0, 140749.0, 164456.0, 75910.0, 114528.0, 83734.0, 80951.0, 84492.0]}, "Greg": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26", "Feb/26"], "receita": [47836.34, 36946.6, 35778.94, 29341.52, 47996.96, 35042.11, 45688.64, 129319.45, 152302.2, 169240.3, 194784.0, 214669.62, 146001.0, 189349.11], "ebitda": [-166294.16, -216650.46, -108917.27, -209389.63, -119967.97, -165308.43, -126659.32, 10631.68, 27706.46, 30241.15, 23653.38, 32741.36, -13287.0, 39736.46], "margem_bruta": [-1.31, -1.64, -68.0, -2.92, -82.0, -1.68, -1.33, 55.00000000000001, 60.0, 62.0, 64.0, 55.00000000000001], "caixa": [60014.91, 87228.67, -23488.73, 70525.49, -53014.22, -71818.87, -219007.79, -233716.26, -232443.64, -229800.17, -235756.58, -236652.81, -282971.81, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85], "lucro_liquido": [-172861.76, -222057.29, -114694.57, -214323.95, -125716.88, -175704.3, -136367.93, 12.52, 17529.04, 20014.46, 17464.58, 34409.62, -13382.0, 39506.4], "custos": [104238.97, 86699.97, 59340.32, 105274.15, 84062.08, 85842.37, 102747.21, 57583.76, 57188.35, 64656.64, 70783.35, 95508.76, 81231.0, 65460.52], "despesas": [107197.23, 162760.13, 84962.12, 130978.22, 82017.51, 111457.16, 67920.28, 61104.01, 58510.95, 73713.8, 99712.13, 85779.08, 77371.0, 79690.52]}, "MySide": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26"], "receita": [969928.6, 1076827.35, 1270002.76, 1039572.1, 1049493.1, 1130623.94, 1217737.19, 1285757.92, 1370709.2, 1422926.77, 1587763.86, 1094876.65, 1923892.08], "ebitda": [5316.98, 13248.62, -67886.49, -336595.02, -416925.43, -381133.64, -425507.33, -385065.85, -501621.96, -482493.96, -213466.36, -530008.03, 385131.45], "margem_bruta": [61.0, 62.0, 62.0, 51.0, 44.0, 46.0, 46.0, 48.0, 48.0, 47.0, 50.0, 17.0], "caixa": [909069.87, 3109059.88, 3644673.26, 3193061.06, 4929706.46, 4679423.74, 4283822.14, 4151293.44, 3438164.16, 2912943.75, 2262815.41, 1626823.29], "lucro_liquido": [9796.97, 18272.62, -46170.15, -311181.51, -388630.6, -338701.86, -384690.06, -352351.74, -469083.26, -455352.46, -194148.72, -517274.3, 407070.8], "custos": [334450.08, 355683.24, 419246.99, 440298.15, 513400.24, 528261.99, 575129.44, 552581.76, 609406.57, 626896.72, 662819.71, 762507.86, 573976.41], "despesas": [507866.77, 576489.59, 749532.9, 787631.51, 827476.36, 834631.18, 914439.98, 905213.69, 1055111.14, 1042525.88, 879653.35, 686756.4, 644109.18]}};
-Chart.defaults.font.family = "'Inter',sans-serif";
+Chart.defaults.font.family = "'Inter',system-ui,sans-serif";
 Chart.defaults.font.size = 11;
-Chart.defaults.color = '#8892A0';
+Chart.defaults.color = '#6B7B8F';
 
 const palette = ['#00528A','#0096C7','#10B981','#F59E0B','#8B5CF6','#EC4899'];
 const names = Object.keys(D);
-
-// Aggregate stacked revenue
 const refMonths = names.reduce((a,n)=>D[n].months.length>a.length?D[n].months:a,[]);
+
+const chartOpts = {scales:{x:{grid:{display:false},ticks:{maxRotation:45}},y:{grid:{color:'#F2F6FA'},ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'}}}};
+
 new Chart(document.getElementById('chart-agg-receita'),{
   type:'bar',
-  data:{labels:refMonths, datasets:names.map((n,i)=>({label:n, data:D[n].receita.map(v=>v/1000), backgroundColor:palette[i%palette.length]+'CC', borderRadius:3, stack:'s'}))},
-  options:{scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'},grid:{color:'#f0f0f0'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16}}}}
+  data:{labels:refMonths,datasets:names.map((n,i)=>({label:n,data:D[n].receita.map(v=>v/1000),backgroundColor:palette[i%palette.length]+'DD',borderRadius:3,stack:'s'}))},
+  options:{...chartOpts,scales:{...chartOpts.scales,x:{...chartOpts.scales.x,stacked:true},y:{...chartOpts.scales.y,stacked:true}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:16,font:{size:11}}}}}
 });
-
 new Chart(document.getElementById('chart-agg-ebitda'),{
   type:'bar',
-  data:{labels:refMonths, datasets:names.map((n,i)=>({label:n, data:D[n].ebitda.map(v=>v/1000), backgroundColor:palette[i%palette.length]+'CC', borderRadius:3, stack:'s'}))},
-  options:{scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'},grid:{color:'#f0f0f0'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16}}}}
+  data:{labels:refMonths,datasets:names.map((n,i)=>({label:n,data:D[n].ebitda.map(v=>v/1000),backgroundColor:palette[i%palette.length]+'DD',borderRadius:3,stack:'s'}))},
+  options:{...chartOpts,scales:{...chartOpts.scales,x:{...chartOpts.scales.x,stacked:true},y:{...chartOpts.scales.y,stacked:true}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:16,font:{size:11}}}}}
 });
 
-// Sparklines on portfolio cards
-names.forEach((n,i) => {
-  const el = document.getElementById('spark-'+n.toLowerCase().replace(/ /g,'_'));
-  if(el && D[n].receita.length) {
-    new Chart(el, {
-      type:'line',
-      data:{labels:D[n].months, datasets:[{data:D[n].receita.map(v=>v/1000), borderColor:palette[i%palette.length], backgroundColor:palette[i%palette.length]+'15', fill:true, tension:.4, pointRadius:0, borderWidth:2}]},
-      options:{scales:{x:{display:false},y:{display:false}},plugins:{legend:{display:false},tooltip:{enabled:false}},elements:{line:{borderWidth:2}}}
-    });
-  }
+// Sparklines
+names.forEach((n,i)=>{
+  const el=document.getElementById('spark-'+n.toLowerCase().replace(/ /g,'_'));
+  if(el&&D[n].receita.length) new Chart(el,{type:'line',data:{labels:D[n].months,datasets:[{data:D[n].receita.map(v=>v/1000),borderColor:palette[i%palette.length],backgroundColor:palette[i%palette.length]+'10',fill:true,tension:.4,pointRadius:0,borderWidth:2}]},options:{scales:{x:{display:false},y:{display:false}},plugins:{legend:{display:false},tooltip:{enabled:false}}}});
 });
 
 // Detail charts
-names.forEach((n,i) => {
-  const id = n.toLowerCase().replace(/ /g,'_');
-  const rc = document.getElementById('detail-'+id+'-receita');
-  if(rc && D[n].receita.length) new Chart(rc,{type:'bar',data:{labels:D[n].months,datasets:[{data:D[n].receita.map(v=>v/1000),backgroundColor:palette[i%palette.length]+'CC',borderRadius:4}]},options:{scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'},grid:{color:'#f0f0f0'}}},plugins:{legend:{display:false}}}});
-  const ec = document.getElementById('detail-'+id+'-ebitda');
-  if(ec && D[n].ebitda.length) new Chart(ec,{type:'bar',data:{labels:D[n].months,datasets:[{data:D[n].ebitda.map(v=>v/1000),backgroundColor:D[n].ebitda.map(v=>v>=0?'#10B981CC':'#EF4444CC'),borderRadius:4}]},options:{scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'},grid:{color:'#f0f0f0'}}},plugins:{legend:{display:false}}}});
-  const mc = document.getElementById('detail-'+id+'-margem');
-  if(mc && D[n].margem_bruta.length) new Chart(mc,{type:'line',data:{labels:D[n].months,datasets:[{data:D[n].margem_bruta,borderColor:'#0096C7',backgroundColor:'rgba(0,150,199,.08)',fill:true,tension:.3,pointRadius:2,borderWidth:2.5}]},options:{scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v.toFixed(0)+'%'},grid:{color:'#f0f0f0'}}},plugins:{legend:{display:false}}}});
-  const cc = document.getElementById('detail-'+id+'-custos');
-  if(cc && D[n].custos.length) new Chart(cc,{type:'bar',data:{labels:D[n].months,datasets:[{label:'Custos',data:D[n].custos.map(v=>v/1000),backgroundColor:'#EF444466',borderRadius:3},{label:'Despesas',data:D[n].despesas.map(v=>v/1000),backgroundColor:'#F59E0B66',borderRadius:3}]},options:{scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'},grid:{color:'#f0f0f0'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+names.forEach((n,i)=>{
+  const id=n.toLowerCase().replace(/ /g,'_');
+  const rc=document.getElementById('detail-'+id+'-receita');
+  if(rc&&D[n].receita.length) new Chart(rc,{type:'bar',data:{labels:D[n].months,datasets:[{data:D[n].receita.map(v=>v/1000),backgroundColor:palette[i%palette.length]+'CC',borderRadius:4}]},options:{...chartOpts,plugins:{legend:{display:false}}}});
+  const ec=document.getElementById('detail-'+id+'-ebitda');
+  if(ec&&D[n].ebitda.length) new Chart(ec,{type:'bar',data:{labels:D[n].months,datasets:[{data:D[n].ebitda.map(v=>v/1000),backgroundColor:D[n].ebitda.map(v=>v>=0?'#10B981CC':'#F04438CC'),borderRadius:4}]},options:{...chartOpts,plugins:{legend:{display:false}}}});
+  const mc=document.getElementById('detail-'+id+'-margem');
+  if(mc&&D[n].margem_bruta.length) new Chart(mc,{type:'line',data:{labels:D[n].months,datasets:[{data:D[n].margem_bruta,borderColor:'#0096C7',backgroundColor:'rgba(0,150,199,.06)',fill:true,tension:.3,pointRadius:2,borderWidth:2.5}]},options:{scales:{x:{grid:{display:false}},y:{grid:{color:'#F2F6FA'},ticks:{callback:v=>v.toFixed(0)+'%'}}},plugins:{legend:{display:false}}}});
+  const cc=document.getElementById('detail-'+id+'-custos');
+  if(cc&&D[n].custos.length) new Chart(cc,{type:'bar',data:{labels:D[n].months,datasets:[{label:'Custos',data:D[n].custos.map(v=>v/1000),backgroundColor:'#F0443866',borderRadius:3},{label:'Despesas',data:D[n].despesas.map(v=>v/1000),backgroundColor:'#F59E0B66',borderRadius:3}]},options:{...chartOpts,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
 });
 
-// Interactions
-function openDetail(name){ document.getElementById('overlay-'+name.toLowerCase().replace(/ /g,'_')).classList.add('show'); document.body.style.overflow='hidden'; }
-function closeDetail(name){ document.getElementById('overlay-'+name.toLowerCase().replace(/ /g,'_')).classList.remove('show'); document.body.style.overflow=''; }
-document.querySelectorAll('.update-header').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
-document.querySelectorAll('.detail-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o){o.classList.remove('show');document.body.style.overflow='';} }));
+function openDetail(n){document.getElementById('overlay-'+n.toLowerCase().replace(/ /g,'_')).classList.add('show');document.body.style.overflow='hidden'}
+function closeDetail(n){document.getElementById('overlay-'+n.toLowerCase().replace(/ /g,'_')).classList.remove('show');document.body.style.overflow=''}
+document.querySelectorAll('.update-header').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
+document.querySelectorAll('.detail-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o){o.classList.remove('show');document.body.style.overflow=''}}));
 </script>
 </body>
 </html>
