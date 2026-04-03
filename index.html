@@ -7,18 +7,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-/* === HIKER DESIGN SYSTEM (from hiker-site/tailwind + index.css) === */
+/* === HIKER DESIGN SYSTEM (from hiker/src/index.css + tailwind.config.ts) === */
 :root {
-  --hiker-dark: #1A1A2E;
-  --hiker-blue: #00528A;
-  --hiker-accent: #0096C7;
-  --hiker-light: #90E0EF;
-  --background: #FFFFFF;
-  --secondary: #F2F6FA;
-  --foreground: #131A24;
-  --muted: #6B7B8F;
-  --border: #D3E0EA;
-  --red: #F04438;
+  --primary: #F74538;        /* hiker-red — vermelho primário */
+  --hiker-dark: #212121;     /* charcoal escuro */
+  --hiker-warm: #FBF7F3;     /* off-white quente */
+  --hiker-stone: #9B9B92;    /* cinza quente */
+  --hiker-light: #F5F2EE;    /* secondary background */
+  --background: #FBF7F3;     /* warm white */
+  --secondary: #F5F2EE;      /* light warm */
+  --foreground: #212121;     /* texto principal */
+  --card: #FFFFFF;
+  --muted: #9B9B92;          /* stone */
+  --border: #E8E3DD;         /* warm border */
   --green: #10B981;
   --amber: #F59E0B;
   --radius: 8px;
@@ -26,41 +27,42 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Inter',system-ui,sans-serif; background:var(--background); color:var(--foreground); -webkit-font-smoothing:antialiased; }
 
-/* === HEADER (sticky glass) === */
-.header { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); height:64px; display:flex; align-items:center; padding:0 2rem; }
-.header .logo { font-size:15px; font-weight:900; color:var(--hiker-blue); letter-spacing:-.3px; }
+/* === HEADER (sticky glass, warm) === */
+.header { position:sticky; top:0; z-index:50; background:rgba(251,247,243,.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); height:64px; display:flex; align-items:center; padding:0 2rem; }
+.header .logo { font-size:15px; font-weight:900; color:var(--foreground); letter-spacing:-.3px; }
 .header .sep { width:1px; height:24px; background:var(--border); margin:0 16px; }
 .header .page-title { font-size:13px; color:var(--muted); font-weight:500; }
 
-/* === HERO (dark, like hiker-site HeroSection dark variant) === */
-.hero { background:var(--hiker-dark); padding:96px 0 72px; text-align:center; }
-.hero .badge { display:inline-block; background:rgba(255,255,255,.1); color:var(--hiker-accent); padding:6px 16px; border-radius:9999px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:24px; }
+/* === HERO (dark charcoal, like HeroSection dark) === */
+.hero { background:var(--hiker-dark); padding:96px 0 72px; text-align:center; position:relative; }
+.hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:6px; background:var(--primary); }
+.hero .badge { display:inline-block; background:rgba(247,69,56,.15); color:var(--primary); padding:6px 16px; border-radius:9999px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:24px; }
 .hero h1 { color:#FFF; font-size:clamp(32px,5vw,56px); font-weight:900; letter-spacing:-1.5px; line-height:1.1; }
-.hero .sub { color:rgba(255,255,255,.6); font-size:clamp(16px,2vw,20px); margin-top:16px; line-height:1.5; font-weight:400; }
+.hero .sub { color:rgba(255,255,255,.5); font-size:clamp(16px,2vw,20px); margin-top:16px; line-height:1.5; font-weight:400; }
 
-/* === STAT BAR (like StatBar.tsx: bg-hiker-blue) === */
-.stat-bar { background:var(--hiker-blue); padding:32px 0; }
+/* === STAT BAR (red primary, like StatBar red variant) === */
+.stat-bar { background:var(--primary); padding:32px 0; }
 .stat-bar .container { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
 .stat-bar .stat .val { font-size:clamp(24px,3vw,32px); font-weight:900; color:#FFF; }
-.stat-bar .stat .label { font-size:clamp(11px,1.2vw,13px); color:rgba(255,255,255,.6); margin-top:4px; font-weight:500; }
+.stat-bar .stat .label { font-size:clamp(11px,1.2vw,13px); color:rgba(255,255,255,.7); margin-top:4px; font-weight:500; }
 @media(max-width:640px) { .stat-bar .container { grid-template-columns:repeat(2,1fr); } }
 
 /* === CONTAINER === */
 .container { max-width:1280px; margin:0 auto; padding:0 2rem; }
 
-/* === SECTIONS (matching hiker-site spacing) === */
+/* === SECTIONS (matching hiker spacing) === */
 .section { padding:80px 0; }
 .section.bg-dark { background:var(--hiker-dark); }
 .section.bg-grey { background:var(--secondary); }
-.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--hiker-blue); margin-bottom:8px; }
-.section.bg-dark .section-label { color:var(--hiker-accent); }
-.section-title { font-size:clamp(24px,3vw,32px); font-weight:900; letter-spacing:-.5px; margin-bottom:40px; }
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--primary); margin-bottom:8px; }
+.section.bg-dark .section-label { color:var(--primary); }
+.section-title { font-size:clamp(24px,3vw,32px); font-weight:900; letter-spacing:-.5px; margin-bottom:40px; color:var(--foreground); }
 .section.bg-dark .section-title { color:#FFF; }
 
 /* === PORTFOLIO GRID (like PortfolioStrip cards) === */
 .portfolio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:24px; }
-.port-card { background:var(--background); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .3s; }
-.port-card:hover { box-shadow:0 8px 30px rgba(0,0,0,.08); transform:translateY(-4px); }
+.port-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .3s; }
+.port-card:hover { box-shadow:0 8px 30px rgba(0,0,0,.06); transform:translateY(-4px); }
 .port-card .top { padding:24px 24px 16px; }
 .port-card .name { font-size:20px; font-weight:900; letter-spacing:-.3px; }
 .port-card .segment { font-size:12px; color:var(--muted); margin-top:2px; font-weight:500; }
@@ -73,15 +75,15 @@ body { font-family:'Inter',system-ui,sans-serif; background:var(--background); c
 .port-card .spark { padding:0 16px 12px; height:56px; }
 .port-card .spark canvas { width:100%!important; height:48px!important; }
 
-/* === CHARTS (white cards, like PillarCards) === */
+/* === CHARTS (white cards) === */
 .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
 @media(max-width:768px) { .chart-grid { grid-template-columns:1fr; } }
-.card { background:var(--background); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:box-shadow .3s; }
-.card:hover { box-shadow:0 4px 16px rgba(0,0,0,.05); }
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:box-shadow .3s; }
+.card:hover { box-shadow:0 4px 16px rgba(0,0,0,.04); }
 .card h3 { font-size:15px; font-weight:700; margin-bottom:16px; color:var(--foreground); }
 
 /* === DETAIL OVERLAY === */
-.detail-overlay { display:none; position:fixed; inset:0; background:rgba(26,26,46,.7); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center; padding:24px; }
+.detail-overlay { display:none; position:fixed; inset:0; background:rgba(33,33,33,.7); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center; padding:24px; }
 .detail-overlay.show { display:flex; }
 .detail-panel { background:var(--background); border-radius:16px; max-width:1060px; width:100%; max-height:92vh; overflow-y:auto; position:relative; }
 .detail-panel .panel-header { padding:32px 32px 24px; border-bottom:1px solid var(--border); }
@@ -113,14 +115,15 @@ body { font-family:'Inter',system-ui,sans-serif; background:var(--background); c
 .update-card.open .update-body { max-height:800px; }
 .update-body-inner { padding:0 20px 20px; border-top:1px solid var(--border); }
 .update-body-inner p { font-size:13px; line-height:1.7; color:#444; margin-top:12px; }
-.update-body-inner .tag { display:inline-block; background:rgba(0,82,138,.08); color:var(--hiker-blue); padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; margin-right:4px; }
+.update-body-inner .tag { display:inline-block; background:rgba(247,69,56,.08); color:var(--primary); padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; margin-right:4px; }
 
-/* === FOOTER (dark, like hiker-site footer) === */
-.footer { background:var(--hiker-dark); padding:48px 0; text-align:center; }
+/* === FOOTER (dark, hiker footer: bg-hiker-dark + red line top) === */
+.footer { background:var(--hiker-dark); padding:48px 0; text-align:center; position:relative; }
+.footer::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--primary); }
 .footer .brand { font-size:16px; font-weight:900; color:#FFF; }
-.footer .sub { font-size:12px; color:rgba(255,255,255,.5); margin-top:4px; }
+.footer .sub { font-size:12px; color:rgba(255,255,255,.3); margin-top:4px; }
 .footer .sep { width:40px; height:1px; background:rgba(255,255,255,.1); margin:16px auto; }
-.footer .link { font-size:12px; color:var(--hiker-accent); text-decoration:none; }
+.footer .link { font-size:12px; color:var(--primary); text-decoration:none; }
 </style>
 </head>
 <body>
@@ -237,98 +240,134 @@ body { font-family:'Inter',system-ui,sans-serif; background:var(--background); c
     
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">Gooxxy</div>
-            <div class="summary">A chamada é nomeada como &#39;Reunião Conselho Gooxxy&#39; e a empresa Gooxxy está explicitamente listada no grupo do Co...</div>
+            <div class="summary">Conselho Orbital ativo com governança e planejamento estratégico</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">30/03/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>A chamada é nomeada como &#39;Reunião Conselho Gooxxy&#39; e a empresa Gooxxy está explicitamente listada no grupo do Conselho Orbital. O foco é obter insights e alinhar a estratégia para o negócio.</p>
-          <p><strong>27/02/2026:</strong> A chamada, intitulada &#39;Conselho Orbital: Alinhamento Assessment&#39;, foca em uma análise aprofundada dos problemas estratégicos, operacionais e financeiros da Gooxxy, que é uma empresa do grupo Conselho Orbital. Há presença de participantes frequentes da Hiker em reuniões Orbital, como Alice Hamdan e Fernando Azevedo, e a discussão abrange DREs, fluxo de caixa e planejamento estratégico.</p><p><strong>26/03/2026:</strong> Reunião do Conselho Orbital com a empresa Gooxxy, cliente listada como Orbital, e participação de Alice Hamdan. A discussão foca na análise aprofundada de entrevistas de clientes, identificação de problemas logísticos e estratégicos que causam churn, e propostas de solução.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker opera o Conselho Orbital da Gooxxy com reuniões regulares de governança, análise de DRE, fluxo de caixa e alinhamento estratégico com participação de advisors dedicados.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Complexidade operacional da cadeia de economia circular e otimização de margens.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Sinergias com outras empresas do portfólio e acesso a redes de parceiros institucionais.</p>
+          </div>
         </div>
       </div>
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">MySide</div>
-            <div class="summary">Todos os participantes são da Hiker. A reunião foca no desenvolvimento de uma ferramenta interna para análise de projeçõ...</div>
+            <div class="summary">Desenvolvimento de ferramentas internas de projeção e suporte à nova rodada</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">28/01/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>Todos os participantes são da Hiker. A reunião foca no desenvolvimento de uma ferramenta interna para análise de projeções financeiras de uma empresa investida (MySide), visando otimizar os fluxos de trabalho da Hiker para gestão de portfólio.</p>
-          <p><strong>28/01/2026:</strong> A chamada discute um novo investimento (bridge round) na MySide, empresa do portfólio da Hiker, e a atuação estratégica de um profissional da Hiker (Felipe Recoi) na operação da MySide.</p><p><strong>24/02/2026:</strong> MySide é uma empresa do portfólio Hiker Venture. A reunião foca em resultados financeiros (VGV, PNL, burn rate), planejamento estratégico de crescimento e uma nova rodada de investimento, discutindo valuation, tranches e liquidation preference com múltiplos investidores.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker desenvolveu modelos proprietários de projeção financeira para a MySide e participou ativamente da estruturação de uma bridge round, além de alocar profissional dedicado para apoiar a operação da investida.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Otimização de margens e escala para novas praças geográficas.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Conexão com operadores imobiliários em novos mercados e validação de unit economics para expansão.</p>
+          </div>
         </div>
       </div>
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">Datlo</div>
-            <div class="summary">A chamada discute um aporte financeiro, planejamento estratégico com a Hiker, lançamento de produtos e metas de ARR da D...</div>
+            <div class="summary">Planejamento estratégico e acompanhamento de metas de ARR</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">28/01/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>A chamada discute um aporte financeiro, planejamento estratégico com a Hiker, lançamento de produtos e metas de ARR da Datlo, empresa do portfólio Venture da Hiker. A conversa é aprofundada sobre a saúde e futuro da empresa.</p>
-          <p><strong>26/12/2025:</strong> Discussão aprofundada com a Datlo, empresa do portfólio Venture da Hiker, sobre métricas financeiras (MRR, ARR, churn, burn, valuation), reestruturações e planos de produtos. Clássico suporte hands-on de Venture Capital.</p><p><strong>20/02/2026:</strong> A Hiker, por meio de seus representantes, oferece suporte prático à Datlo (empresa de portfólio) para sua participação no SXSW, incluindo matchmaking, brand awareness e ativações de marca.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker conduziu sessões de planejamento estratégico com foco em metas de ARR, análise de churn e burn rate, e acompanhou o lançamento de novos produtos e reestruturações internas.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Redução de churn e aceleração de receita recorrente para atingir metas de ARR.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Apresentação a potenciais clientes enterprise e conexão com players do ecossistema de geomarketing.</p>
+          </div>
         </div>
       </div>
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">Greg</div>
-            <div class="summary">A Gregpay, empresa do portfólio Venture da Hiker, apresenta um overview estratégico, operacional e regulatório, incluind...</div>
+            <div class="summary">Reposicionamento estratégico e suporte regulatório</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">28/01/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>A Gregpay, empresa do portfólio Venture da Hiker, apresenta um overview estratégico, operacional e regulatório, incluindo mudança de posicionamento, progresso com novos associados e adaptação a regulamentações do Banco Central.</p>
-          <p><strong>20/02/2026:</strong> A chamada envolve a Hiker prestando suporte à GregPay, uma empresa do portfólio Venture, para apresentar seus dados financeiros a um potencial investidor/comprador (TOTS). A discussão foca na análise e justificativa de um pico de receita para uma transação de investimento.</p><p><strong>10/02/2026:</strong> A Gregpay é uma empresa do portfólio da Hiker, e a discussão aprofundou-se em métricas operacionais (TPV, maquininhas ativas), financeiras (queima, break-even, captação), estrutura de equipe e planejamento estratégico de novos projetos, típico de acompanhamento de investida. O Guilherme também oferece conexões e suporte.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker apoiou a GregPay no reposicionamento estratégico, adaptação às novas regulamentações do Banco Central e preparação de materiais para potenciais investidores e parceiros estratégicos.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Ambiente regulatório em mudança e necessidade de consolidar crescimento de receita.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Conexão com instituições financeiras e parceiros para distribuição.</p>
+          </div>
         </div>
       </div>
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">Fluna</div>
-            <div class="summary">A reunião com a Fluna, empresa do portfólio Venture, discute projeções de receitas (MRR), custos, breakeven e aportes da...</div>
+            <div class="summary">Análise financeira profunda e avaliação de estrutura de capital</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">26/03/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>A reunião com a Fluna, empresa do portfólio Venture, discute projeções de receitas (MRR), custos, breakeven e aportes da Hiker, indicando análise financeira profunda e captação.</p>
-          <p><strong>13/02/2026:</strong> A reunião foca na análise aprofundada de performance financeira da Fluna, empresa do portfólio Venture da Hiker. Discutem-se faturamento, despesas, fluxo de caixa, propostas, estrutura societária e até um possível Venture Debt, indicando suporte estratégico e financeiro.</p><p><strong>01/04/2026:</strong> A chamada é com a Fluna, uma empresa do portfólio de investimento da Hiker. A discussão aprofundada aborda contrato, participação de equity, governança, separação de CNPJs e critérios de faturamento, alinhado ao suporte hands-on para uma empresa investida.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker realizou análise detalhada de DRE, projeções de receita e breakeven. Avaliamos alternativas de capitalização incluindo Venture Debt e revisão da estrutura societária.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Receita em retração e necessidade de reestruturação operacional para atingir breakeven.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Identificação de parcerias estratégicas para aceleração de receita e redução de custos fixos.</p>
+          </div>
         </div>
       </div>
       <div class="update-card">
         <div class="update-header">
-          <div>
+          <div class="left">
             <div class="company">Loopify</div>
-            <div class="summary">A discussão aprofundada sobre desempenho financeiro, reestruturação de time, iniciativas estratégicas (M&A, piloto de no...</div>
+            <div class="summary">Reestruturação operacional e avaliação de oportunidades de M&A</div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div class="right">
             <span class="date">28/01/2026</span>
-            <span class="expand-icon">&#9660;</span>
+            <span class="chevron">&#9660;</span>
           </div>
         </div>
         <div class="update-body">
-          <p>A discussão aprofundada sobre desempenho financeiro, reestruturação de time, iniciativas estratégicas (M&A, piloto de novo espaço), desafios operacionais e redução de custos (capex) indica suporte hands-on e análise da saúde da empresa.</p>
-          <p><strong>22/01/2026:</strong> A chamada discute uma potencial fusão e aquisição (M&A) da Loopify (empresa do portfólio Venture) com outra empresa, Gutz/Gooxxy (empresa Orbital). O foco está em valuation, cap table e estratégias de integração, com a presença de um consultor externo para a transação.</p><p><strong>16/01/2026:</strong> Discussão aprofundada sobre uma potencial aquisição da Loopify (empresa do portfólio Hiker Venture) pela Aguxi, envolvendo gestão de equity, investidores, troca de ações, valuation e estratégias de saída.</p>
+          <div class="update-body-inner">
+            <p><span class="tag">Atuação Hiker</span></p>
+            <p>A Hiker conduziu análise de desempenho financeiro, apoiou reestruturação de equipe e custos, e avaliou oportunidades de fusão e aquisição com empresas complementares do ecossistema.</p>
+            <p><span class="tag">Desafios Identificados</span></p>
+            <p>Redução de burn rate e definição do modelo de crescimento sustentável.</p>
+            <p><span class="tag">Oportunidades para a Rede</span></p>
+            <p>Potencial de M&A com empresas complementares e acesso a novos canais de distribuição.</p>
+          </div>
         </div>
       </div>
   </div>
@@ -562,13 +601,13 @@ body { font-family:'Inter',system-ui,sans-serif; background:var(--background); c
 const D = {"Agora": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25"], "receita": [85060.0, 67635.0, 82368.33, 92132.93, 87419.56, 192209.56, 100096.56, 95096.56, 379595.2, 139891.86, 110278.86, 132814.86], "ebitda": [-65018.41, -82721.8, -60285.58, -53040.82, -117955.94, -37534.68, -138728.08, -184902.82, -33948.71, -130977.4, -202417.95, -99627.8], "margem_bruta": [49.0, 25.0, 46.0, 42.0, 37.0, 67.0, 39.0, 25.0, 34.0, 57.99999999999999, 25.0, 56.99999999999999], "caixa": [1598164.66, 2016730.99, 1979744.55, 2411702.41, 2495075.26, 2630630.54, 2371438.45, 2708041.06, 2662158.21, 2489706.3, 2353039.91, 2098522.22, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17, 598509.17], "lucro_liquido": [-68017.57, -85814.26, -82935.62, -55957.06, -121691.8, -68289.26, -138084.11, -189084.46, -77724.8, -133030.5, -194090.72, -132607.27], "custos": [41458.94, 49035.2, 42637.62, 51205.14, 52816.84, 55320.83, 58755.91, 68968.23, 249011.19, 55978.58, 79380.43, 55144.65], "despesas": [107947.05, 102009.83, 100033.31, 93341.17, 153388.84, 155147.49, 180823.01, 212126.61, 168290.96, 216227.31, 236540.72, 179766.23]}, "Datlo": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26", "Feb/26"], "receita": [583247.0, 657094.0, 707083.0, 768647.0, 810525.0, 759676.0, 828024.0, 818656.0, 821761.0, 960114.0, 922753.0, 1378416.0, 834706.0, 811031.0], "ebitda": [-132665.6, -93672.7, -130488.1, -11334.6, -141636.2, -219539.9, -132629.1, -187083.1, -32454.7, 43397.9, -106399.2, 545562.8, -81412.0, -9054.6], "margem_bruta": [62.0, 60.0, 61.0, 63.0, 64.0, 60.0, 65.0, 67.0, 68.0, 69.0, 66.0, 80.0], "caixa": [2032709.0, 1974998.5, 1863040.4, 1837480.4, 1825166.0, 1552549.0, 1392182.7, 1125752.0, 1114047.6, 1179174.36, 777456.26, 666615.43, 710907.23, 627971.63, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43, 1068858.43], "lucro_liquido": [-119179.0, -79914.9, -120228.3, 1553.4, -130269.3, -209264.1, -124488.2, -180454.2, -26016.8, 49072.6, -102232.7, 547524.6, -83070.5, -7779.1], "custos": [205472.4, 242482.2, 255096.5, 266642.2, 271183.5, 281100.6, 273535.1, 255441.4, 253445.6, 278896.9, 293935.3, 258125.2, 306403.1, 249788.5], "despesas": [470878.2, 463807.5, 534722.6, 461474.0, 626371.4, 646927.5, 631487.7, 695354.4, 566219.2, 573538.1, 675273.0, 482799.8, 554011.0, 516231.7]}, "Fluna": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26"], "receita": [130259.0, 93146.0, 107076.0, 114456.0, 79184.0, 54398.0, 61868.0, 36788.0, 84799.0, 51024.0, 35312.0, 95902.0, 22939.0], "ebitda": [-65981.0, -135464.0, -100284.0, -165494.0, -150728.0, -197474.0, -143630.0, -170750.0, -45313.0, -132685.0, -93612.0, -85290.0, -109997.0], "margem_bruta": [15.0, -26.0, 0.0, -24.0, -39.0, -1.48, -5.0, -18.0, 39.0, -40.0, -31.0, -5.0], "caixa": [254447.0, 275430.0, 251804.0, 234663.0, 64551.0, 98471.0, -97922.0, -284573.0, -129182.0, -263570.0, -494032.0, -451962.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0, -595096.0], "lucro_liquido": [-66094.0, -135742.0, -100398.0, -165610.0, -150878.0, -197698.0, -143737.0, -170853.0, -45411.0, -132767.0, -93776.0, -85772.0, -110476.0], "custos": [102339.0, 109128.0, 105249.0, 121056.0, 104327.0, 131257.0, 61935.0, 42209.0, 48119.0, 64107.0, 41589.0, 92514.0, 45298.0], "despesas": [84429.0, 112646.0, 100437.0, 142328.0, 121364.0, 119159.0, 140749.0, 164456.0, 75910.0, 114528.0, 83734.0, 80951.0, 84492.0]}, "Greg": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26", "Feb/26"], "receita": [47836.34, 36946.6, 35778.94, 29341.52, 47996.96, 35042.11, 45688.64, 129319.45, 152302.2, 169240.3, 194784.0, 214669.62, 146001.0, 189349.11], "ebitda": [-166294.16, -216650.46, -108917.27, -209389.63, -119967.97, -165308.43, -126659.32, 10631.68, 27706.46, 30241.15, 23653.38, 32741.36, -13287.0, 39736.46], "margem_bruta": [-1.31, -1.64, -68.0, -2.92, -82.0, -1.68, -1.33, 55.00000000000001, 60.0, 62.0, 64.0, 55.00000000000001], "caixa": [60014.91, 87228.67, -23488.73, 70525.49, -53014.22, -71818.87, -219007.79, -233716.26, -232443.64, -229800.17, -235756.58, -236652.81, -282971.81, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85, -282162.85], "lucro_liquido": [-172861.76, -222057.29, -114694.57, -214323.95, -125716.88, -175704.3, -136367.93, 12.52, 17529.04, 20014.46, 17464.58, 34409.62, -13382.0, 39506.4], "custos": [104238.97, 86699.97, 59340.32, 105274.15, 84062.08, 85842.37, 102747.21, 57583.76, 57188.35, 64656.64, 70783.35, 95508.76, 81231.0, 65460.52], "despesas": [107197.23, 162760.13, 84962.12, 130978.22, 82017.51, 111457.16, 67920.28, 61104.01, 58510.95, 73713.8, 99712.13, 85779.08, 77371.0, 79690.52]}, "MySide": {"months": ["Jan/25", "Feb/25", "Mar/25", "Apr/25", "May/25", "Jun/25", "Jul/25", "Aug/25", "Sep/25", "Oct/25", "Nov/25", "Dec/25", "Jan/26"], "receita": [969928.6, 1076827.35, 1270002.76, 1039572.1, 1049493.1, 1130623.94, 1217737.19, 1285757.92, 1370709.2, 1422926.77, 1587763.86, 1094876.65, 1923892.08], "ebitda": [5316.98, 13248.62, -67886.49, -336595.02, -416925.43, -381133.64, -425507.33, -385065.85, -501621.96, -482493.96, -213466.36, -530008.03, 385131.45], "margem_bruta": [61.0, 62.0, 62.0, 51.0, 44.0, 46.0, 46.0, 48.0, 48.0, 47.0, 50.0, 17.0], "caixa": [909069.87, 3109059.88, 3644673.26, 3193061.06, 4929706.46, 4679423.74, 4283822.14, 4151293.44, 3438164.16, 2912943.75, 2262815.41, 1626823.29], "lucro_liquido": [9796.97, 18272.62, -46170.15, -311181.51, -388630.6, -338701.86, -384690.06, -352351.74, -469083.26, -455352.46, -194148.72, -517274.3, 407070.8], "custos": [334450.08, 355683.24, 419246.99, 440298.15, 513400.24, 528261.99, 575129.44, 552581.76, 609406.57, 626896.72, 662819.71, 762507.86, 573976.41], "despesas": [507866.77, 576489.59, 749532.9, 787631.51, 827476.36, 834631.18, 914439.98, 905213.69, 1055111.14, 1042525.88, 879653.35, 686756.4, 644109.18]}};
 Chart.defaults.font.family = "'Inter',system-ui,sans-serif";
 Chart.defaults.font.size = 11;
-Chart.defaults.color = '#6B7B8F';
+Chart.defaults.color = '#9B9B92';
 
-const palette = ['#00528A','#0096C7','#10B981','#F59E0B','#8B5CF6','#EC4899'];
+const palette = ['#F74538','#212121','#10B981','#F59E0B','#9B9B92','#D4736C'];
 const names = Object.keys(D);
 const refMonths = names.reduce((a,n)=>D[n].months.length>a.length?D[n].months:a,[]);
 
-const chartOpts = {scales:{x:{grid:{display:false},ticks:{maxRotation:45}},y:{grid:{color:'#F2F6FA'},ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'}}}};
+const chartOpts = {scales:{x:{grid:{display:false},ticks:{maxRotation:45}},y:{grid:{color:'#F5F2EE'},ticks:{callback:v=>'R$ '+v.toLocaleString('pt-BR')+'k'}}}};
 
 new Chart(document.getElementById('chart-agg-receita'),{
   type:'bar',
@@ -595,7 +634,7 @@ names.forEach((n,i)=>{
   const ec=document.getElementById('detail-'+id+'-ebitda');
   if(ec&&D[n].ebitda.length) new Chart(ec,{type:'bar',data:{labels:D[n].months,datasets:[{data:D[n].ebitda.map(v=>v/1000),backgroundColor:D[n].ebitda.map(v=>v>=0?'#10B981CC':'#F04438CC'),borderRadius:4}]},options:{...chartOpts,plugins:{legend:{display:false}}}});
   const mc=document.getElementById('detail-'+id+'-margem');
-  if(mc&&D[n].margem_bruta.length) new Chart(mc,{type:'line',data:{labels:D[n].months,datasets:[{data:D[n].margem_bruta,borderColor:'#0096C7',backgroundColor:'rgba(0,150,199,.06)',fill:true,tension:.3,pointRadius:2,borderWidth:2.5}]},options:{scales:{x:{grid:{display:false}},y:{grid:{color:'#F2F6FA'},ticks:{callback:v=>v.toFixed(0)+'%'}}},plugins:{legend:{display:false}}}});
+  if(mc&&D[n].margem_bruta.length) new Chart(mc,{type:'line',data:{labels:D[n].months,datasets:[{data:D[n].margem_bruta,borderColor:'#F74538',backgroundColor:'rgba(247,69,56,.06)',fill:true,tension:.3,pointRadius:2,borderWidth:2.5}]},options:{scales:{x:{grid:{display:false}},y:{grid:{color:'#F5F2EE'},ticks:{callback:v=>v.toFixed(0)+'%'}}},plugins:{legend:{display:false}}}});
   const cc=document.getElementById('detail-'+id+'-custos');
   if(cc&&D[n].custos.length) new Chart(cc,{type:'bar',data:{labels:D[n].months,datasets:[{label:'Custos',data:D[n].custos.map(v=>v/1000),backgroundColor:'#F0443866',borderRadius:3},{label:'Despesas',data:D[n].despesas.map(v=>v/1000),backgroundColor:'#F59E0B66',borderRadius:3}]},options:{...chartOpts,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
 });
